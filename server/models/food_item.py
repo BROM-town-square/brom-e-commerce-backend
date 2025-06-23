@@ -12,8 +12,8 @@ class FoodItem(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
-    image_url = db.Column(db.string)
-    category = db.Column(db.string)
+    image_url = db.Column(db.String)
+    category = db.Column(db.String)
     order_items = db.relationship("OrderItem", back_populates="food_item")
     orders = association_proxy("order_items", "order")
 
