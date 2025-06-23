@@ -1,6 +1,7 @@
 from . import db
 from sqlalchemy_serializer import SerializerMixin
 from datetime import datetime
+from sqlalchemy.ext.associationproxy import association_proxy
 
 class Order(db.Model, SerializerMixin):
 
@@ -14,6 +15,7 @@ class Order(db.Model, SerializerMixin):
     total = db.Column(db.Float, nullable=False)
     user = db.relationship("User", back_populates="orders")
     items = db.relationship("OrderItem", back_populates="order")
+    menu_items = association_proxy("order_items", "food_item")
 
     def __repr__(self):
         return f"<Order #{self.id} - User {self.user_id} - Total: ${self.total:.2f}>"
