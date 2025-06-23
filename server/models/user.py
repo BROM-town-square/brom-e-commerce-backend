@@ -1,6 +1,7 @@
 from . import db
 from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.ext.associationproxy import association_proxy
 
 class User(db.Model, SerializerMixin):
 
@@ -12,8 +13,9 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
+    role = db.Column(db.String(20), default='user')
     orders = db.relationship("Order", back_populates="user")
+    menu_items = association_proxy("orders", "food_items")
 
     @property
     def password(self):
