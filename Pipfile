@@ -13,6 +13,7 @@ python-dotenv = "*"
 sqlalchemy-serializer = "*"
 flask-restful = "*"
 faker = "*"
+flask-cors = "*"
 
 [dev-packages]
 
