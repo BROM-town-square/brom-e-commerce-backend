@@ -6,9 +6,8 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app
-    runtime: python
     repo: https://github.com/BROM-town-square/brom-e-commerce-backend
-    branch: row
+    branch: main
     autoDeploy: true
 
     envVars:
