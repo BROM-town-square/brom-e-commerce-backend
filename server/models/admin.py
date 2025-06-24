@@ -22,4 +22,4 @@ class Admin(db.Model, SerializerMixin):
         return check_password_hash(self._password_hash, password)
 
     def __repr__(self):
-        return f"<Admin {self.username}>"
+        return f"<Admin {self.username} (admin)>"

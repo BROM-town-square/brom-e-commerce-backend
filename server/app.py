@@ -20,15 +20,15 @@ def create_app():
     CORS(app)
 
     
-    #from .controllers.auth_routes import auth_bp
-    #from .controllers.user_routes import user_bp
-    #from .controllers.food_routes import food_bp
-    #from .controllers.order_routes import order_bp
+    from .controllers.auth_routes import auth_bp
+    from .controllers.user_routes import user_bp
+    from .controllers.food_routes import food_bp
+    from .controllers.order_routes import order_bp
 
-    #app.register_blueprint(auth_bp, url_prefix="/api/auth")
-    #app.register_blueprint(user_bp, url_prefix="/api/users")
-    #app.register_blueprint(food_bp, url_prefix="/api/food")
-    #app.register_blueprint(order_bp, url_prefix="/api/orders")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(user_bp, url_prefix="/api/users")
+    app.register_blueprint(food_bp, url_prefix="/api/food")
+    app.register_blueprint(order_bp, url_prefix="/api/orders")
 
     
     @app.route("/")
