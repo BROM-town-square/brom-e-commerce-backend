@@ -9,7 +9,7 @@ services:
     runtime: python
     pythonVersion: 3.12.3 
     repo: https://github.com/BROM-town-square/brom-e-commerce-backend
-    branch: row
+    branch: main
     autoDeploy: true
 
     envVars:
