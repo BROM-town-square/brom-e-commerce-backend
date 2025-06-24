@@ -28,4 +28,4 @@ class User(db.Model, SerializerMixin):
         return check_password_hash(self._password_hash, password)
 
     def __repr__(self):
-        return f"<User {self.username} ({'Admin' if self.is_admin else 'Customer'})>"
+        return f"<User {self.username} (customer)>"
