@@ -7,7 +7,6 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app
     runtime: python
-    pythonVersion: 3.12.3 
     repo: https://github.com/BROM-town-square/brom-e-commerce-backend
     branch: main
     autoDeploy: true
@@ -19,5 +18,3 @@ services:
         sync: false
       - key: FLASK_ENV
         value: production
-      - key: PYTHON_VERSION
-        value: 3.12.3
