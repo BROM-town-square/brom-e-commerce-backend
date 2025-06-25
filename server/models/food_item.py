@@ -14,7 +14,7 @@ class FoodItem(db.Model, SerializerMixin):
     price = db.Column(db.Float, nullable=False)
     image_url = db.Column(db.String)
     category = db.Column(db.String)
-    order_items = db.relationship("OrderItem", back_populates="food_item")
+    order_items = db.relationship("OrderItem", back_populates="food_item", cascade="all, delete-orphan")
     orders = association_proxy("order_items", "order")
 
     def __repr__(self):
