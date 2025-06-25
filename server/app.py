@@ -67,4 +67,8 @@ def create_app():
         token = TokenBlocklist.query.filter_by(jti=jti).first()
         return token is not None
 
+    @jwt.revoked_token_loader
+    def revoked_token_callback(jwt_header, jwt_payload):
+        return jsonify({"error": "Token has been revoked"}), 401
+
     return app
