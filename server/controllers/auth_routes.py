@@ -100,17 +100,23 @@ class AdminLogin(Resource):
 
 class Logout(Resource):
     @jwt_required(verify_type=False)
-    def get(self):
-        jwt = get_jwt()
-        jti = jwt['jti']
+    def post(self):
+        try:
+            jwt_data = get_jwt()
+            jti = jwt_data["jti"]
+            token_type = jwt_data["type"]
 
-        token_type = jwt['type']
+            db.session.add(TokenBlocklist(jti=jti))
+            db.session.commit()
 
-        new_jti_obj = TokenBlocklist(jti=jti)
-        db.session.add(new_jti_obj)
-        db.session.commit()
-
-        return make_response({"message" : f"{token_type} token revoked successfully"}, 200)
+            return make_response(jsonify({
+                "message": f"{token_type.capitalize()} token revoked successfully"
+            }), 200)
+        except Exception as e:
+            print("Logout failed:", str(e))
+            return make_response(jsonify({
+                "error": "Logout failed due to server error"
+            }), 500)
 
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
