@@ -12,7 +12,7 @@ class FoodList(Resource):
         foods = FoodItem.query.all()
         return make_response(jsonify([food.to_dict() for food in foods]), 200)
 
-    @jwt_required()
+    #@jwt_required()
     def post(self):
         identity = get_jwt_identity()
         if identity.get("role") != "admin":
@@ -48,7 +48,7 @@ class FoodDetail(Resource):
             return make_response(jsonify({"error": "Food item not found"}), 404)
         return make_response(jsonify(food.to_dict()), 200)
 
-    @jwt_required()
+    #@jwt_required()
     def patch(self, id):
         identity = get_jwt_identity()
         if identity.get("role") != "admin":
@@ -66,7 +66,7 @@ class FoodDetail(Resource):
         db.session.commit()
         return make_response(jsonify(food.to_dict()), 200)
 
-    @jwt_required()
+    #@jwt_required()
     def delete(self, id):
         identity = get_jwt_identity()
         if identity.get("role") != "admin":
