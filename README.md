@@ -5,7 +5,7 @@ Welcome to Taste Town, the backend powerhouse for a vibrant and efficient superm
 ## Requirements
    -Framework: Use Flask to build a RESTful API.
    -Database: Use SQLite or PostgreSQL for data persistence.
-   -API Features: Implement the following features/endpoints:
+   -API Features: Implement the following features/ endpoints:
     -User Management:
         -POST /api/register: Register a new user (store username, hashed password, email).
         -POST /api/login: Authenticate a user and return a JWT.
@@ -44,3 +44,61 @@ GitHub Repository:
     flask db upgrade
 
 
+## Project Structure
+.
+taste-town-backend/
+│
+├── server/
+│   ├── models/
+        |-- __init__.py
+        |-- admin.py
+│   ├── controllers/
+│   ├── app.py
+│   ├── config.py
+│   └── seed.py
+│
+├── migrations/
+├── requirements.txt
+└── README.md
+
+## Features
+### User Management
+| Method | Endpoint        | Description                    |
+| ------ | --------------- | ------------------------------ |
+| POST   | `/api/register` | Register a new user            |
+| POST   | `/api/login`    | Authenticate user, return JWT  |
+| GET    | `/api/profile`  | Get authenticated user profile |
+| PUT    | `/api/profile`  | Update user profile            |
+| POST   | `/api/refresh`  | Refresh JWT                    |
+
+
+### Task Management
+| Method | Endpoint          | Description                         |
+| ------ | ----------------- | ----------------------------------- |
+| POST   | `/api/tasks`      | Create a task                       |
+| GET    | `/api/tasks`      | List all tasks (authenticated user) |
+| PUT    | `/api/tasks/<id>` | Update a task                       |
+| DELETE | `/api/tasks/<id>` | Delete a task                       |
+
+
+### Item Catalog
+| Method | Endpoint          | Description                         |
+| ------ | ----------------- | ----------------------------------- |
+| POST   | `/api/items`      | Create an item                      |
+| GET    | `/api/items`      | List all items (optional filtering) |
+| PUT    | `/api/items/<id>` | Update an item                      |
+| DELETE | `/api/items/<id>` | Delete an item                      |
+
+
+### Comment System
+| Method | Endpoint                  | Description                           |
+| ------ | ------------------------- | ------------------------------------- |
+| POST   | `/api/comments`           | Add a comment to an item              |
+| GET    | `/api/comments/<item_id>` | Get comments for a specific item      |
+| DELETE | `/api/comments/<id>`      | Delete a comment (by author or admin) |
+
+
+### Search
+| Method | Endpoint      | Description                      |
+| ------ | ------------- | -------------------------------- |
+| GET    | `/api/search` | Search items or tasks by keyword |
