@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, make_response
 from flask_restful import Api, Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from server.models.food_item import FoodItem
 from server.models import db
 
@@ -12,12 +11,7 @@ class FoodList(Resource):
         foods = FoodItem.query.all()
         return make_response(jsonify([food.to_dict() for food in foods]), 200)
 
-    #@jwt_required()
     def post(self):
-        identity = get_jwt_identity()
-        if identity.get("role") != "admin":
-            return make_response(jsonify({"error": "Admins only can add food items"}), 403)
-
         data = request.get_json()
         name = data.get("name")
         description = data.get("description")
@@ -48,12 +42,7 @@ class FoodDetail(Resource):
             return make_response(jsonify({"error": "Food item not found"}), 404)
         return make_response(jsonify(food.to_dict()), 200)
 
-    #@jwt_required()
     def patch(self, id):
-        identity = get_jwt_identity()
-        if identity.get("role") != "admin":
-            return make_response(jsonify({"error": "Admins only can update food items"}), 403)
-
         food = FoodItem.query.get(id)
         if not food:
             return make_response(jsonify({"error": "Food item not found"}), 404)
@@ -66,12 +55,7 @@ class FoodDetail(Resource):
         db.session.commit()
         return make_response(jsonify(food.to_dict()), 200)
 
-    #@jwt_required()
     def delete(self, id):
-        identity = get_jwt_identity()
-        if identity.get("role") != "admin":
-            return make_response(jsonify({"error": "Admins only can delete food items"}), 403)
-
         food = FoodItem.query.get(id)
         if not food:
             return make_response(jsonify({"error": "Food item not found"}), 404)
