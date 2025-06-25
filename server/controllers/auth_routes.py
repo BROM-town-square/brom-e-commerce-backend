@@ -99,29 +99,33 @@ class AdminLogin(Resource):
         return make_response(jsonify({"error": "Invalid credentials"}), 401)
 
 class Logout(Resource):
-   @jwt_required(verify_type=False)
-   def post(self):
-    try:
-        jwt_data = get_jwt()
+    @jwt_required(verify_type=False)
+    def post(self):
+        try:
+            jwt_data = get_jwt()
 
-        if "jti" not in jwt_data:
-            return make_response(jsonify({"error": "Token is missing jti"}), 400)
+            if "jti" not in jwt_data:
+                return make_response(jsonify({"error": "Token is missing jti"}), 400)
 
-        jti = jwt_data["jti"]
-        token_type = jwt_data.get("type", "access")
+            jti = jwt_data["jti"]
+            token_type = jwt_data.get("type", "access")
 
-        db.session.add(TokenBlocklist(jti=jti))
-        db.session.commit()
+        
+            if not TokenBlocklist.query.filter_by(jti=jti).first():
+                db.session.add(TokenBlocklist(jti=jti))
+                db.session.commit()
 
-        return make_response(jsonify({
-            "message": f"{token_type.capitalize()} token revoked successfully"
-        }), 200)
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return make_response(jsonify({
-            "error": f"Logout failed: {str(e)}"
-        }), 500)
+            return make_response(jsonify({
+                "message": f"{token_type.capitalize()} token revoked successfully"
+            }), 200)
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return make_response(jsonify({
+                "error": f"Logout failed: {str(e)}"
+            }), 500)
+
 
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
