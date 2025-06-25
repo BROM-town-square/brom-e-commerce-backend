@@ -12,6 +12,7 @@ from server.models.admin import Admin
 from server.models import db
 from server.models.token_blocklist import TokenBlocklist
 from sqlalchemy.exc import IntegrityError
+import logging
 
 
 
@@ -76,6 +77,7 @@ class AdminRegister(Resource):
             db.session.commit()
             return make_response(jsonify({"message": "Admin registered successfully"}), 201)
         except IntegrityError:
+            print("Logout failed:", e)
             db.session.rollback()
             return make_response(jsonify({"error": "Admin registration failed"}), 400)
 
@@ -97,18 +99,27 @@ class AdminLogin(Resource):
 
         return make_response(jsonify({"error": "Invalid credentials"}), 401)
 
+logger = logging.getLogger(__name__)
+
 class Logout(Resource):
     @jwt_required()
     def post(self):
-        jti = get_jwt()["jti"]
-
         try:
-            db.session.add(TokenBlocklist(jti=jti)) 
-            db.session.commit()
-            return jsonify({"message": "Logout successful"}), 200
-        except Exception as e:
-            return jsonify({"error": f"Logout failed: {str(e)}"}), 500
+            jti = get_jwt()["jti"]
+            logger.info(f"Attempting to log out token with jti: {jti}")
 
+            # Optional: avoid duplicate insert
+            if not TokenBlocklist.query.filter_by(jti=jti).first():
+                db.session.add(TokenBlocklist(jti=jti))
+                db.session.commit()
+                return jsonify({"message": "Logout successful"}), 200
+            else:
+                return jsonify({"message": "Token already logged out"}), 200
+
+        except Exception as e:
+            logger.error(f"Logout failed: {str(e)}", exc_info=True)
+            return jsonify({"message": "Internal Server Error"}), 500
+            
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
     def post(self):
