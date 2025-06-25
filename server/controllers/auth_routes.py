@@ -113,6 +113,8 @@ class Logout(Resource):
                 "message": f"{token_type.capitalize()} token revoked successfully"
             }), 200)
         except Exception as e:
+            import traceback
+            traceback.print_exc() 
             print("Logout failed:", str(e))
             return make_response(jsonify({
                 "error": "Logout failed due to server error"
