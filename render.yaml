@@ -16,5 +16,7 @@ services:
         sync: false
       - key: JWT_SECRET_KEY
         sync: false
+      - key: SECRET_KEY
+        sync: false
       - key: FLASK_ENV
         value: production
