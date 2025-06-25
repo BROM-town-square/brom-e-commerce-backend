@@ -9,12 +9,12 @@ from server.models.order import Order
 from server.models.order_item import OrderItem
 from server.app import create_app
 
-
 fake = Faker()
 
 def seed_data():
     print("Seeding Taste Town data...")
 
+    # Clear existing data
     OrderItem.query.delete()
     Order.query.delete()
     FoodItem.query.delete()
@@ -22,12 +22,12 @@ def seed_data():
     Admin.query.delete()
     db.session.commit()
 
-    
+    # Create admin
     admin = Admin(username="admin1", email="admin@example.com")
     admin.password = "adminpass123"
     db.session.add(admin)
 
-    
+    # Create users
     users = []
     for _ in range(5):
         user = User(username=fake.user_name(), email=fake.email())
@@ -35,24 +35,32 @@ def seed_data():
         users.append(user)
         db.session.add(user)
 
-    
-    categories = ["Burgers", "Pizza", "Drinks", "Desserts"]
+    # Food images from Unsplash
+    unsplash_images = {
+        "Burgers": "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=400&auto=format",
+        "Pizza": "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=400&auto=format",
+        "Drinks": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format",
+        "Desserts": "https://images.unsplash.com/photo-1599785209798-8d9e060d2a4f?w=400&auto=format"
+    }
+
+    categories = list(unsplash_images.keys())
+
+    # Create food items
     food_items = []
-    for _ in range(10):
-        name = fake.word().capitalize()
+    for category in categories:
         item = FoodItem(
-            name=name,
+            name=fake.word().capitalize(),
             description=fake.sentence(),
             price=round(fake.pyfloat(min_value=5, max_value=25), 2),
-            category=choice(categories),
-            image_url=f"https://loremflickr.com/320/240/food?random={randint(1,1000)}"
+            category=category,
+            image_url=unsplash_images[category]
         )
         food_items.append(item)
         db.session.add(item)
 
     db.session.commit()
 
-    
+    # Create orders and order items
     for user in users:
         order = Order(user_id=user.id, total=0)
         db.session.add(order)
