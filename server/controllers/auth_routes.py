@@ -4,12 +4,16 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     jwt_required,
-    get_jwt_identity
+    get_jwt_identity,
+    get_jwt
 )
 from server.models.user import User
 from server.models.admin import Admin
 from server.models import db
+from server.models.token_blocklist import TokenBlocklist
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+
 
 auth_bp = Blueprint('auth', __name__)
 api = Api(auth_bp)
@@ -93,6 +97,19 @@ class AdminLogin(Resource):
 
         return make_response(jsonify({"error": "Invalid credentials"}), 401)
 
+class Logout(Resource):
+    @jwt_required()
+    def post(self):
+        jti = get_jwt()["jti"]
+        now = datetime.utcnow()
+
+        try:
+            db.session.add(TokenBlocklist(jti=jti, created_at=now))
+            db.session.commit()
+            return jsonify({"message": "Logout successful"}), 200
+        except:
+            return jsonify({"error": "Logout failed"}), 500
+
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
     def post(self):
@@ -104,4 +121,5 @@ api.add_resource(UserRegister, "/user/register")
 api.add_resource(UserLogin, "/user/login")
 api.add_resource(AdminRegister, "/admin/register")
 api.add_resource(AdminLogin, "/admin/login")
+api.add_resource(Logout, "/logout")
 api.add_resource(RefreshToken, "/refresh")
