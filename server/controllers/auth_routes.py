@@ -48,8 +48,8 @@ class UserLogin(Resource):
         user = User.query.filter_by(username=username).first()
 
         if user and user.verify_password(password):
-            access = create_access_token(identity=str(user.id))
-            refresh = create_refresh_token(identity=str(user.id))
+            access = create_access_token(identity=str(user.id), additional_claims={"role": "user"})
+            refresh = create_refresh_token(identity=str(user.id), additional_claims={"role": "user"})
             return make_response(jsonify({
                 "access_token": access,
                 "refresh_token": refresh
@@ -89,8 +89,8 @@ class AdminLogin(Resource):
         admin = Admin.query.filter_by(username=username).first()
 
         if admin and admin.verify_password(password):
-            access = create_access_token(identity=str(admin.id))
-            refresh = create_refresh_token(identity=str(admin.id))
+            access = create_access_token(identity=str(admin.id), additional_claims={"role": "admin"})
+            refresh = create_refresh_token(identity=str(admin.id), additional_claims={"role": "admin"})
             return make_response(jsonify({
                 "access_token": access,
                 "refresh_token": refresh
