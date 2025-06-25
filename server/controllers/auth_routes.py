@@ -12,7 +12,7 @@ from server.models.admin import Admin
 from server.models import db
 from server.models.token_blocklist import TokenBlocklist
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime
+
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -103,11 +103,11 @@ class Logout(Resource):
         jti = get_jwt()["jti"]
 
         try:
-            db.session.add(TokenBlocklist(jti=jti, created_at=now))
+            db.session.add(TokenBlocklist(jti=jti)) 
             db.session.commit()
             return jsonify({"message": "Logout successful"}), 200
-        except:
-            return jsonify({"error": "Logout failed"}), 500
+        except Exception as e:
+            return jsonify({"error": f"Logout failed: {str(e)}"}), 500
 
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
