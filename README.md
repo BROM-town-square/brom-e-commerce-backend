@@ -3,14 +3,20 @@
 Welcome to Taste Town, the backend powerhouse for a vibrant and efficient supermarket management system. Built with Flask, PostgreSQL, and secure token-based authentication, this API supports product inventory, user management, orders, and more—everything needed to run a modern digital market.
 
 ## Requirements
-   -Framework: Use Flask to build a RESTful API.
-   -Database: Use SQLite or PostgreSQL for data persistence.
-   -API Features: Implement the following features/ endpoints:
+
+
+   -Framework: Use Flask to build a RESTful API
+
+   -Database: Use SQLite or PostgreSQL for data persistence
+
+   -API Features: Implement the following features/ endpoints
+
     -User Management:
-        -POST /api/register: Register a new user (store username, hashed password, email).
-        -POST /api/login: Authenticate a user and return a JWT.
-        -GET /api/profile: Retrieve authenticated user’s profile (protected route).
-        -PUT /api/profile: Update user profile (e.g., name, email).
+    
+        -POST /api/register: Register a new user (store username, hashed password, email)
+        -POST /api/login: Authenticate a user and return a JWT
+        -GET /api/profile: Retrieve authenticated user’s profile (protected route)
+        -PUT /api/profile: Update user profile (e.g., name, email)
 
 ## Setup
 
@@ -102,3 +108,14 @@ taste-town-backend/
 | Method | Endpoint      | Description                      |
 | ------ | ------------- | -------------------------------- |
 | GET    | `/api/search` | Search items or tasks by keyword |
+
+
+## Data Validation and Error Handling
+ -All request data is validated 
+
+ -Meaningfull HTTP status codes and error messages:
+
+    400-Bad Request
+    401-Unauthorized
+    403-Forbidden
+    404-Not Found
