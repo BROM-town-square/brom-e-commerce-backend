@@ -30,7 +30,7 @@ def create_app():
     app.register_blueprint(food_bp, url_prefix="/api/food")
     app.register_blueprint(order_bp, url_prefix="/api/orders")
 
-    
+
     @app.route("/")
     def index():
         return jsonify({"message": "Taste Town API is running"}), 200
@@ -42,7 +42,12 @@ def create_app():
 
     @app.errorhandler(500)
     def internal_error(e):
-        return jsonify({"error": "Server error"}), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": "Server error",
+            "detail": str(e)  
+        }), 500
 
     @jwt.unauthorized_loader
     def unauthorized_callback(err):
