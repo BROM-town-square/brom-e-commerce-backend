@@ -130,7 +130,7 @@ class Logout(Resource):
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
     def post(self):
-        identity = get_jwt_identity()
+        identity = str(get_jwt_identity())
         new_access = create_access_token(identity=identity)
         return make_response(jsonify({"access_token": new_access}), 200)
 
