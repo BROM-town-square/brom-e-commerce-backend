@@ -101,7 +101,6 @@ class Logout(Resource):
     @jwt_required()
     def post(self):
         jti = get_jwt()["jti"]
-        now = datetime.utcnow()
 
         try:
             db.session.add(TokenBlocklist(jti=jti, created_at=now))
