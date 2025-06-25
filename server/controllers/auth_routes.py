@@ -12,7 +12,6 @@ from server.models.admin import Admin
 from server.models import db
 from server.models.token_blocklist import TokenBlocklist
 from sqlalchemy.exc import IntegrityError
-import logging
 
 
 
@@ -99,27 +98,20 @@ class AdminLogin(Resource):
 
         return make_response(jsonify({"error": "Invalid credentials"}), 401)
 
-logger = logging.getLogger(__name__)
-
 class Logout(Resource):
-    @jwt_required()
-    def post(self):
-        try:
-            jti = get_jwt()["jti"]
-            logger.info(f"Attempting to log out token with jti: {jti}")
+    @jwt_required(verify_type=False)
+    def get(self):
+        jwt = get_jwt()
+        jti = jwt['jti']
 
-            # Optional: avoid duplicate insert
-            if not TokenBlocklist.query.filter_by(jti=jti).first():
-                db.session.add(TokenBlocklist(jti=jti))
-                db.session.commit()
-                return jsonify({"message": "Logout successful"}), 200
-            else:
-                return jsonify({"message": "Token already logged out"}), 200
+        token_type = jwt['type']
 
-        except Exception as e:
-            logger.error(f"Logout failed: {str(e)}", exc_info=True)
-            return jsonify({"message": "Internal Server Error"}), 500
-            
+        new_jti_obj = TokenBlocklist(jti=jti)
+        db.session.add(new_jti_obj)
+        db.session.commit()
+
+        return make_response({"message" : f"{token_type} token revoked successfully"}, 200)
+
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
     def post(self):
