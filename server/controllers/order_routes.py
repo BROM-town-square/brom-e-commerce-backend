@@ -19,7 +19,7 @@ class UserOrders(Resource):
     @jwt_required()
     def post(self):
         user_id = int(get_jwt_identity())  
-        new_order = Order(user_id=user_id)
+        new_order = Order(user_id=user_id, total=0.0)
         db.session.add(new_order)
         db.session.commit()
         return make_response(jsonify(new_order.to_dict()), 201)
