@@ -138,3 +138,27 @@ Rate Limiting: Apply using Flask-Limiter (recommended)
 
 Environment Variables: Managed via .env and python-dotenv
 
+## Tech Stack
+
+| **Category**       | **Technology / Tool**                                         |
+| ------------------ | ------------------------------------------------------------- |
+| **Backend**        | Flask, Flask-JWT-Extended, Flask-Migrate, SQLAlchemy          |
+| **Database**       | PostgreSQL (or SQLite for development)                        |
+| **Authentication** | JWT (JSON Web Tokens)                                         |
+| **Validation**     | Marshmallow, Flask-Inputs, or custom validation logic         |
+| **Security**       | bcrypt for password hashing, HTTPS recommended for production |
+| **Testing**        | pytest                                                        |
+| **Deployment**     | Render, Heroku, or Railway (recommended)                      |
+
+## Authors
+ • Richard - [https://github.com/Richard3wasonga]
+
+ • Nevil - [https://github.com/Neviloporo]
+
+## Contributions
+
+Pull requests are welcome! For major changes, please open an issue first to discuss your ideas.
+
+## License
+
+This project is open-source and available under the MIT Licence.
