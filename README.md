@@ -147,8 +147,8 @@ Environment Variables: Managed via .env and python-dotenv
 | **Authentication** | JWT (JSON Web Tokens)                                         |
 | **Validation**     | Marshmallow, Flask-Inputs, or custom validation logic         |
 | **Security**       | bcrypt for password hashing, HTTPS recommended for production |
-| **Testing**        | pytest                                                        |
-| **Deployment**     | Render, Heroku, or Railway (recommended)                      |
+| **Testing**        |                                                         |
+| **Deployment**     | Render                     |
 
 ## Authors
  • Richard - [https://github.com/Richard3wasonga]
