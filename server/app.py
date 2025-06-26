@@ -19,7 +19,7 @@ def create_app():
     migrate = Migrate(app, db)
     CORS(app, resources={r"/api/*": {"origins": [
         "http://localhost:5173", 
-        "https://your-production-frontend.com"
+        "https://brom-e-commerce-front-end.onrender.com"
     ]}}, supports_credentials=True)
 
     
