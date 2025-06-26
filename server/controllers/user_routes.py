@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, make_response
 from flask_restful import Api, Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from server.models.user import User
 from server.models import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -94,6 +94,26 @@ class UserPasswordUpdate(Resource):
 
         return make_response(jsonify({"message": "Password updated successfully"}), 200)
 
+class AdminUserList(Resource):
+    @jwt_required()
+    def get(self):
+        claims = get_jwt()
+        if claims.get("role") != "admin":
+            return make_response(jsonify({"error": "Admin access only"}), 403)
+
+        users = User.query.all()
+        user_list = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            } for user in users
+        ]
+        return make_response(jsonify(user_list), 200)
+
+
 
 api.add_resource(UserProfile, '/me')
 api.add_resource(UserPasswordUpdate, '/me/password')
+api.add_resource(AdminUserList, '/admin/users')
+
