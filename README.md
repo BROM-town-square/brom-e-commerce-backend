@@ -119,3 +119,22 @@ taste-town-backend/
     401-Unauthorized
     403-Forbidden
     404-Not Found
+
+
+## Authentication and Security
+
+
+JWT-based auth using Flask-JWT-Extended
+
+Token Expiration: 1-hour access tokens with refresh tokens support
+
+Protected Routes: All except /register and /login require a valid JWT
+
+Password Hashing: Secure password storage using bcrypt
+
+Token Refresh: Use /api/refresh endpoint with stored refresh tokens
+
+Rate Limiting: Apply using Flask-Limiter (recommended)
+
+Environment Variables: Managed via .env and python-dotenv
+
