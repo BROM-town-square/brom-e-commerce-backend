@@ -12,28 +12,24 @@ api = Api(order_bp)
 class UserOrders(Resource):
     @jwt_required()
     def get(self):
-        identity = get_jwt_identity()
-        user_id = identity['id']
+        user_id = int(get_jwt_identity())  
         orders = Order.query.filter_by(user_id=user_id).all()
         return make_response(jsonify([order.to_dict() for order in orders]), 200)
 
     @jwt_required()
     def post(self):
-        identity = get_jwt_identity()
-        user_id = identity['id']
-
+        user_id = int(get_jwt_identity())  
         new_order = Order(user_id=user_id)
         db.session.add(new_order)
         db.session.commit()
-
         return make_response(jsonify(new_order.to_dict()), 201)
 
 class OrderItemResource(Resource):
     @jwt_required()
     def post(self, order_id):
-        identity = get_jwt_identity()
-        user_id = identity['id']
+        user_id = int(get_jwt_identity()) 
 
+        
         order = Order.query.filter_by(id=order_id, user_id=user_id).first()
         if not order:
             return make_response(jsonify({'error': 'Order not found or unauthorized'}), 404)
@@ -58,6 +54,7 @@ class OrderItemResource(Resource):
         db.session.commit()
 
         return make_response(jsonify(order_item.to_dict()), 201)
+
 
 api.add_resource(UserOrders, '')
 api.add_resource(OrderItemResource, '/<int:order_id>/items')
