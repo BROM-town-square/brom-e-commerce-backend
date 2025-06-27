@@ -1,164 +1,269 @@
-# Taste Town Backened
+# **Taste Town API**
 
-Welcome to Taste Town, the backend powerhouse for a vibrant and efficient supermarket management system. Built with Flask, PostgreSQL, and secure token-based authentication, this API supports product inventory, user management, orders, and more—everything needed to run a modern digital market.
+> A secure, **JWT-authenticated Flask API** for managing an online food ordering system. Features include User/Admin registration and login, food catalog management, ordering and token blacklisting.
 
-## Requirements
+## **Requirements**
 
+- Python 3.12+
+- PostgreSQL database
+- JWT authentication (access &refresh tokens)
+- Models: `User`, `Admin`, `FoodItem`, `Order`, `OrderItem`, `TokenBlocklist`
+- Role-based access control
+- Modular Blueprints and controller structure
 
-   -Framework: Use Flask to build a RESTful API
+## **Setup**
 
-   -Database: Use SQLite or PostgreSQL for data persistence
+### **Pre-Requisites**
 
-   -API Features: Implement the following features/ endpoints
+- OS: **Winsows 10+, Linux 3.8+, or MacOS X 10.7+**
+- Python: **3.12+**
+- PostgreSQL: installed and configured
+- Pipenv (recommended)
+- Postman(for API testing): [Download](https://www.postman.com/)
+- RAM: 2GB+ | Disk space: 1GB+
 
-    -User Management:
-    
-        -POST /api/register: Register a new user (store username, hashed password, email)
-        -POST /api/login: Authenticate a user and return a JWT
-        -GET /api/profile: Retrieve authenticated user’s profile (protected route)
-        -PUT /api/profile: Update user profile (e.g., name, email)
+---
 
-## Setup
+## **Installation**
 
-### Pre-Requisites
-    -Operating System: (Windows 10+, Linux 3.8+, or MacOS X 10.7+)
-    -Python version: 3.12+
-    -PostgreSQL (ensure a database is created)
-    -Pipenv
-    -RAM: 2GB minimum, 4GB recommended (for smoother development)
-    -Free Disk Space: 1GB minimum, 2GB recommended
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/BROM-town-square/brom-e-commerce-backend 
+   ```
 
+2. Navigate to the project directory:
+   ```bash
+   cd brom-e-commerce-backend
+   ```
 
-## Installation 
+3. Install dependencies:
+   ```bash
+   pipenv install
+   ```
 
-GitHub Repository:
-### 1. Clone this repository
-    git@github.com:BROM-town-squarebrom-e-commerce-backend.git
+4. Activate python environment:
+   ```bash
+   pipenv shell
 
-### 2. Navigate to project directory:
-    cd brom-properties-backened
+## **PostgreSQL Setup**
 
-### 3. Install dependencies:
-    pipenv shell
+Create the database:
 
-### 4. Activate python environment
-    pipenv shell
+```bash
 
-### 5. Run migrations 
-    flask db init (Run flask db init only once, and only if the migrations/ folder does not already exist)
-    flask db migrate -m "Initial"
-    flask db upgrade
+CREATE DATABASE taste_town_db;
 
+```
+## **Create `.env` File**
 
-## Project Structure
+At the root of project, create a `.env` file:
+
+```bash
+
+DATABASE_URI=postgresql://<username>:<password>@localhost:5432/taste_town_db
+JWT_SECRET_KEY=<your_super_secret_key>
+SECRET_KEY=<your_super_secret_key>
+
+```
+## **Migrations & Seeding**
+
+> Make sure to set the Flask app factory path before running migrations:
+
+```bash
+
+export FLASK_APP=server.app:create_app
+
+```
+Then:
+> **NOTE:** Run `flask db init` **only once**,  and only if the `migrations/` folder does not already exist.
+
+```bash
+
+flask db init        
+flask db migrate -m "Initial migration"
+flask db upgrade
+
+```
+To seed the database:
+
+```bash
+
+python -m server.seed
+
+```
+
+## **Run the Server**
+
+Use the `run.py` script to start the API:
+
+```bash
+
+python run.py
+
+```
+The app runs at:
+
+```bash
+
+http://127.0.0.1:5555
+
+```
+
+## **Project Structure**
+
+```bash
+
 .
-taste-town-backend/
-│
-├── server/
-│   ├── models/
-        |-- __init__.py
-        |-- admin.py
-│   ├── controllers/
-│   ├── app.py
-│   ├── config.py
-│   └── seed.py
-│
-├── migrations/
+├── migrations
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       ├── 0427c5822a09_change_jti_column_to_text.py
+│       ├── d6d9272325ab_initial_migration.py
+│       └── f09213ea016e_reset_migration.py
+├── Pipfile
+├── Pipfile.lock
+├── Procfile
+├── README.md
+├── render.yaml
 ├── requirements.txt
-└── README.md
+├── run.py
+├── runtime.txt
+└── server
+    ├── app.py
+    ├── config.py
+    ├── controllers
+    │   ├── auth_routes.py
+    │   ├── food_routes.py
+    │   ├── order_routes.py
+    │   └── user_routes.py
+    ├── models
+    │   ├── admin.py
+    │   ├── food_item.py
+    │   ├── __init__.py
+    │   ├── order_item.py
+    │   ├── order.py
+    │   ├── token_blocklist.py
+    │   └── user.py
+    ├── __pycache__
+    │   └── app.cpython-312.pyc
+    └── seed.py
 
-## Features
-### User Management
-| Method | Endpoint        | Description                    |
-| ------ | --------------- | ------------------------------ |
-| POST   | `/api/register` | Register a new user            |
-| POST   | `/api/login`    | Authenticate user, return JWT  |
-| GET    | `/api/profile`  | Get authenticated user profile |
-| PUT    | `/api/profile`  | Update user profile            |
-| POST   | `/api/refresh`  | Refresh JWT                    |
+```
 
+## **API Routes Summary**
 
-### Task Management
-| Method | Endpoint          | Description                         |
-| ------ | ----------------- | ----------------------------------- |
-| POST   | `/api/tasks`      | Create a task                       |
-| GET    | `/api/tasks`      | List all tasks (authenticated user) |
-| PUT    | `/api/tasks/<id>` | Update a task                       |
-| DELETE | `/api/tasks/<id>` | Delete a task                       |
-
-
-### Item Catalog
-| Method | Endpoint          | Description                         |
-| ------ | ----------------- | ----------------------------------- |
-| POST   | `/api/items`      | Create an item                      |
-| GET    | `/api/items`      | List all items (optional filtering) |
-| PUT    | `/api/items/<id>` | Update an item                      |
-| DELETE | `/api/items/<id>` | Delete an item                      |
-
-
-### Comment System
-| Method | Endpoint                  | Description                           |
-| ------ | ------------------------- | ------------------------------------- |
-| POST   | `/api/comments`           | Add a comment to an item              |
-| GET    | `/api/comments/<item_id>` | Get comments for a specific item      |
-| DELETE | `/api/comments/<id>`      | Delete a comment (by author or admin) |
-
-
-### Search
-| Method | Endpoint      | Description                      |
-| ------ | ------------- | -------------------------------- |
-| GET    | `/api/search` | Search items or tasks by keyword |
-
-
-## Data Validation and Error Handling
- -All request data is validated 
-
- -Meaningfull HTTP status codes and error messages:
-
-    400-Bad Request
-    401-Unauthorized
-    403-Forbidden
-    404-Not Found
+| Method | Endpoint                      | Auth Required  | Role    | Description                       |
+|--------|-------------------------------|----------------|---------|-----------------------------------|
+| POST   | `/api/auth/user/register`     | No             | Public  | Register a new user               |
+| POST   | `/api/auth/user/login`        | No             | Public  | Login as user                     |
+| POST   | `/api/auth/admin/register`    | No             | Public  | Register as admin                 |
+| POST   | `/api/auth/admin/login`       | No             | Public  | Login as admin                    |
+| POST   | `/api/auth/logout`            | Yes            | Both    | Logout & blacklist token          |
+| POST   | `/api/auth/refresh`           | Yes (refresh)  | Both    | Refresh access token              |
+| GET    | `/api/food`                   | No             | Public  | List all food items               |
+| POST   | `/api/food`                   | Yes            | Admin   | Create a food item                |
+| GET    | `/api/food/<id>`              | No             | Public  | Get food item by ID               |
+| PATCH  | `/api/food/<id>`              | Yes            | Admin   | Update food item by ID            |
+| DELETE | `/api/food/<id>`              | Yes            | Admin   | Delete food item by ID            |
+| GET    | `/api/orders`                 | Yes            | User    | List user’s orders                |
+| POST   | `/api/orders`                 | Yes            | User    | Create a new order                |
+| POST   | `/api/orders/<id>/items`      | Yes            | User    | Add item to order                 |
+| GET    | `/api/users/me`               | Yes            | User    | Get logged-in user's profile      |
+| PATCH  | `/api/users/me`               | Yes            | User    | Update user's profile             |
+| PATCH  | `/api/users/me/password`      | Yes            | User    | Change password                   |
+| DELETE | `/api/users/me`               | Yes            | User    | Delete own account                |
+| GET    | `/api/users/admin/users`      | Yes            | Admin   | Admin can view all users          |
 
 
-## Authentication and Security
+## **Tech Stack**
+
+| Tool / Library         | Description                                   |
+|------------------------|-----------------------------------------------|
+| **Python 3.12**        | Core language                                 |
+| **Flask**              | Web framework                                 |
+| **Flask-RESTful**      | Simplifies resource routing                   |
+| **Flask-JWT-Extended** | Handles JWT authentication                    |
+| **Flask-Migrate**      | Database migrations                           |
+| **Flask-CORS**         | Cross-origin request support                  |
+| **SQLAlchemy**         | ORM for database interaction                  |
+| **PostgreSQL**         | Relational database                           |
+| **Pipenv**             | Dependency management                         |
+| **dotenv**             | Secure environment configuration              |
+| **Postman**            | API route testing                             |
 
 
-JWT-based auth using Flask-JWT-Extended
+## **Model Relationship**
 
-Token Expiration: 1-hour access tokens with refresh tokens support
+- A `User` can place many `Orders`.
+- An `Order` contains multiple `OrderItems`.
+- An `OrderItem` relates a `FoodItem` to an `Order`.
+- Admins manage the food catalog.
+- JWT token revocation is tracking with `TokenBlocklist`
 
-Protected Routes: All except /register and /login require a valid JWT
+## **Entity Relationship Diagram**
 
-Password Hashing: Secure password storage using bcrypt
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : places
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    FOOD_ITEMS ||--o{ ORDER_ITEMS : included_in
+    ADMINS {
+        int id PK
+        string username
+        string email
+        string _password_hash
+    }
+    USERS {
+        int id PK
+        string username
+        string email
+        string _password_hash
+    }
+    ORDERS {
+        int id PK
+        int user_id FK
+        datetime created_at
+        float total
+    }
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int food_item_id FK
+        int quantity
+    }
+    FOOD_ITEMS {
+        int id PK
+        string name
+        text description
+        float price
+        string image_url
+        string category
+    }
 
-Token Refresh: Use /api/refresh endpoint with stored refresh tokens
+```
 
-Rate Limiting: Apply using Flask-Limiter (recommended)
+---
 
-Environment Variables: Managed via .env and python-dotenv
+## **Authors**
 
-## Tech Stack
+- [Ricahrd Wasonga](https://github.com/Richard3wasonga)
 
-| **Category**       | **Technology / Tool**                                         |
-| ------------------ | ------------------------------------------------------------- |
-| **Backend**        | Flask, Flask-JWT-Extended, Flask-Migrate, SQLAlchemy          |
-| **Database**       | PostgreSQL (or SQLite for development)                        |
-| **Authentication** | JWT (JSON Web Tokens)                                         |
-| **Validation**     | Marshmallow, Flask-Inputs, or custom validation logic         |
-| **Security**       | bcrypt for password hashing, HTTPS recommended for production |
-| **Testing**        |                                                         |
-| **Deployment**     | Render                     |
+- [Nevil Oporo](https://github.com/Neviloporo)
 
-## Authors
- • Richard - [https://github.com/Richard3wasonga]
 
- • Nevil - [https://github.com/Neviloporo]
 
-## Contributions
+## **Contributing**
 
 Pull requests are welcome! For major changes, please open an issue first to discuss your ideas.
 
-## License
+---
 
-This project is open-source and available under the MIT Licence.
+## **License**
+
+This project is open-source and available under the MIT License.
+
+
+
