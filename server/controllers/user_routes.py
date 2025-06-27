@@ -74,25 +74,26 @@ class UserPasswordUpdate(Resource):
             return make_response(jsonify({"error": "User not found"}), 404)
 
         data = request.get_json()
-        current_password = data.get('current_password')
-        new_password = data.get('new_password')
+        current_password = data.get("current_password")
+        new_password = data.get("new_password")
 
         if not current_password or not new_password:
             return make_response(jsonify({"error": "Both current and new password are required"}), 400)
 
-        if not check_password_hash(user.password, current_password):
+        if not user.verify_password(current_password):
             return make_response(jsonify({"error": "Incorrect current password"}), 400)
 
         if len(new_password) < 8:
             return make_response(jsonify({"error": "Password must be at least 8 characters long"}), 400)
 
-        if check_password_hash(user.password, new_password):
+        if user.verify_password(new_password):
             return make_response(jsonify({"error": "New password must be different from the current one"}), 400)
 
-        user.password = generate_password_hash(new_password)
+        user.password = new_password 
         db.session.commit()
 
         return make_response(jsonify({"message": "Password updated successfully"}), 200)
+
 
 class AdminUserList(Resource):
     @jwt_required()
