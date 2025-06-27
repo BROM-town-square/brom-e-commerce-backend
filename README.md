@@ -253,6 +253,10 @@ erDiagram
 
 - [Nevil Oporo](https://github.com/Neviloporo)
 
+- [Brian Njuguna](https://github.com/NJUGUNA-png)
+
+- [Joy Mitchel](https://github.com/JoyMitchel)
+
 
 
 ## **Contributing**
