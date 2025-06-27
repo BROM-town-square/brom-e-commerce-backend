@@ -1,12 +1,26 @@
 # **Taste Town API**
 
+
+![Python](https://img.shields.io/badge/python-3.12-blue?style=flat-square&logo=python)
+![Flask](https://img.shields.io/badge/Flask-Web%20API-black?style=flat-square&logo=flask)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-DB-blue?style=flat-square&logo=postgresql)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+![Maintained](https://img.shields.io/badge/maintained-yes-green?style=flat-square)
+![Render](https://img.shields.io/badge/Deployed-Render-blueviolet?style=flat-square&logo=render)
+
+<p align="center">
+  <img src="screenshots/logo.png" width="200" alt="Taste Town Logo">
+</p>
+
+
+
 > A secure, **JWT-authenticated Flask API** for managing an online food ordering system. Features include User/Admin registration and login, food catalog management, ordering and token blacklisting.
 
 ## **Requirements**
 
 - Python 3.12+
 - PostgreSQL database
-- JWT authentication (access &refresh tokens)
+- JWT authentication (access & refresh tokens)
 - Models: `User`, `Admin`, `FoodItem`, `Order`, `OrderItem`, `TokenBlocklist`
 - Role-based access control
 - Modular Blueprints and controller structure
@@ -15,7 +29,7 @@
 
 ### **Pre-Requisites**
 
-- OS: **Winsows 10+, Linux 3.8+, or MacOS X 10.7+**
+- OS: **Windows 10+, Linux 3.8+, or MacOS X 10.7+**
 - Python: **3.12+**
 - PostgreSQL: installed and configured
 - Pipenv (recommended)
@@ -194,6 +208,256 @@ http://127.0.0.1:5555
 | **dotenv**             | Secure environment configuration              |
 | **Postman**            | API route testing                             |
 
+## **Authentication Routes**
+
+### **POST `/api/auth/user/register`**
+
+Registers a new user.
+
+```json
+
+{
+  "username": "janedoe",
+  "email": "jane@example.com",
+  "password": "securePass123"
+}
+
+```
+
+**Response**
+
+```json
+
+{
+  "message": "User registered successfully"
+}
+
+```
+
+### **POST `/api/auth/user/login`**
+
+Authenticates a user and returns access and refresh tokens.
+
+```json
+
+{
+  "username": "janedoe",
+  "password": "securePass123"
+}
+
+```
+**Response**
+
+```json
+
+{
+  "access_token": "<JWT_ACCESS_TOKEN>",
+  "refresh_token": "<JWT_REFRESH_TOKEN>"
+}
+
+```
+
+use this token in headers:
+
+```makefile
+
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+
+```
+
+### **POST `/api/auth/logout`**
+
+Revokes current token (Works for both access and refresh tokens).
+
+**Headers**
+
+```makefile
+
+Authorization: Bearer <JWT_TOKEN>
+
+```
+
+**Response**
+
+```json
+
+{
+  "message": "Access token revoked successfully"
+}
+
+```
+### **POST `/api/auth/refresh`**
+
+Generate a new access token using a refresh token.
+
+**Headers**
+
+```makefile
+
+Authorization: Bearer <JWT_REFRESH_TOKEN>
+
+```
+
+**Response**
+
+```json
+
+{
+  "access_token": "<NEW_JWT_ACCESS_TOKEN>"
+}
+
+```
+
+## **Food Routes**
+
+### **GET `/api/food`**
+
+Publicly fetch all available food items.
+
+**Response**
+
+```json
+
+[
+  {
+    "id": 1,
+    "name": "Burger",
+    "price": 8.99,
+    "description": "Grilled beef with cheese",
+    "category": "Fast Food"
+  }
+]
+
+```
+
+### **POST `/api/food` (Admin only)**
+
+Create a new food item.
+
+```makefile
+
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+
+```
+
+**Body**
+
+```json
+
+{
+  "name": "Pizza",
+  "description": "Cheesy",
+  "price": 12.5,
+  "category": "Italian",
+  "image_url": "http://image.png"
+}
+
+```
+## **Order Routes**
+
+### **GET `/api/orders`**
+
+Returns all orders belonging to the authenticated user.
+
+```http
+
+GET /api/orders
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+
+```
+**Response**
+
+```json
+
+[
+  {
+    "id": 1,
+    "user_id": 2,
+    "total": 24.5,
+    "items": [...]
+  }
+]
+
+```
+
+### **POST `/api/orders/<order_id>/items`**
+
+Adds a food item to an existing Order.
+
+```json
+
+{
+  "food_item_id": 3,
+  "quantity": 2
+}
+
+```
+
+## **User Routes**
+
+### **GET `/api/users/me`**
+
+Returns the profile of the logged-in-user.
+
+```http
+
+GET /api/users/me
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+
+```
+**Response**
+
+```json
+
+{
+  "id": 4,
+  "username": "janedoe",
+  "email": "jane@example.com"
+}
+
+```
+
+### **PATCH `/api/users/me/password`**
+
+Updates the user's password.
+
+**Body**
+
+```json
+
+{
+  "current_password": "oldPass",
+  "new_password": "newSecurePass123"
+}
+
+```
+
+### **GET `/api/users/admin/users` (Admin only)**
+
+Return a list of all registered users.
+
+**Headers**
+
+```makefile
+
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+
+```
+
+**Response**
+
+```json
+
+[
+  {
+    "id": 1,
+    "username": "janedoe",
+    "email": "jane@example.com"
+  },
+  ...
+]
+
+```
 
 ## **Model Relationship**
 
