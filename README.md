@@ -249,9 +249,13 @@ erDiagram
 
 ## **Authors**
 
-- [Ricahrd Wasonga](https://github.com/Richard3wasonga)
+- [Richard Wasonga](https://github.com/Richard3wasonga)
 
 - [Nevil Oporo](https://github.com/Neviloporo)
+
+- [Brian Njuguna](https://github.com/NJUGUNA-png)
+
+- [Joy Mitchel](https://github.com/JoyMitchel)
 
 
 
