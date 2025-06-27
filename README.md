@@ -151,6 +151,8 @@ http://127.0.0.1:5555
 ├── runtime.txt
 ├── screenshots
 │   ├── additemorder.png
+│   ├── admingetusers.png
+│   ├── editpassword.png
 │   ├── getfoods.png
 │   ├── get_use_details.png
 │   ├── login.png
@@ -443,6 +445,8 @@ Updates the user's password.
 
 ```
 
+![update password](./screenshots/editpassword.png)
+
 ### **GET `/api/users/admin/users` (Admin only)**
 
 Return a list of all registered users.
@@ -469,6 +473,10 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
 ]
 
 ```
+
+![admin gets all users](./screenshots/admingetusers.png)
+
+---
 
 ## **Model Relationship**
 
