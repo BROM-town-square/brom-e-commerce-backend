@@ -222,6 +222,8 @@ Registers a new user.
 
 ```
 
+![register](./screenshots/register.png)
+
 ### **POST `/api/auth/user/login`**
 
 Authenticates a user and returns access and refresh tokens.
@@ -253,6 +255,8 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
 
 ```
 
+![login](./screenshots/login.png)
+
 ### **POST `/api/auth/logout`**
 
 Revokes current token (Works for both access and refresh tokens).
@@ -274,6 +278,9 @@ Authorization: Bearer <JWT_TOKEN>
 }
 
 ```
+
+![logout](./screenshots/logout.png)
+
 ### **POST `/api/auth/refresh`**
 
 Generate a new access token using a refresh token.
@@ -296,6 +303,8 @@ Authorization: Bearer <JWT_REFRESH_TOKEN>
 
 ```
 
+![refresh](./screenshots/refresh.png)
+
 ## **Food Routes**
 
 ### **GET `/api/food`**
@@ -317,6 +326,8 @@ Publicly fetch all available food items.
 ]
 
 ```
+
+![all foods](./screenshots/getfoods.png)
 
 ### **POST `/api/food` (Admin only)**
 
@@ -366,6 +377,7 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
 ]
 
 ```
+![get orders](./screenshots/makeorder.png)
 
 ### **POST `/api/orders/<order_id>/items`**
 
@@ -379,6 +391,7 @@ Adds a food item to an existing Order.
 }
 
 ```
+![add item to order](./screenshots/additemorder.png)
 
 ## **User Routes**
 
@@ -402,6 +415,8 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
 }
 
 ```
+
+![get user info](./screenshots/get_use_details.png)
 
 ### **PATCH `/api/users/me/password`**
 
