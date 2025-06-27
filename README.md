@@ -16,6 +16,11 @@
 
 > A secure, **JWT-authenticated Flask API** for managing an online food ordering system. Features include User/Admin registration and login, food catalog management, ordering and token blacklisting.
 
+---
+## **Live Deployment**
+
+Hosted on **Render**: [Visit production URL](https://brom-e-commerce-backend.onrender.com/)
+
 ## **Requirements**
 
 - Python 3.12+
@@ -192,22 +197,6 @@ http://127.0.0.1:5555
 | GET    | `/api/users/admin/users`      | Yes            | Admin   | Admin can view all users          |
 
 
-## **Tech Stack**
-
-| Tool / Library         | Description                                   |
-|------------------------|-----------------------------------------------|
-| **Python 3.12**        | Core language                                 |
-| **Flask**              | Web framework                                 |
-| **Flask-RESTful**      | Simplifies resource routing                   |
-| **Flask-JWT-Extended** | Handles JWT authentication                    |
-| **Flask-Migrate**      | Database migrations                           |
-| **Flask-CORS**         | Cross-origin request support                  |
-| **SQLAlchemy**         | ORM for database interaction                  |
-| **PostgreSQL**         | Relational database                           |
-| **Pipenv**             | Dependency management                         |
-| **dotenv**             | Secure environment configuration              |
-| **Postman**            | API route testing                             |
-
 ## **Authentication Routes**
 
 ### **POST `/api/auth/user/register`**
@@ -361,7 +350,6 @@ Returns all orders belonging to the authenticated user.
 
 ```http
 
-GET /api/orders
 Authorization: Bearer <JWT_ACCESS_TOKEN>
 
 ```
@@ -401,7 +389,6 @@ Returns the profile of the logged-in-user.
 
 ```http
 
-GET /api/users/me
 Authorization: Bearer <JWT_ACCESS_TOKEN>
 
 ```
@@ -508,6 +495,23 @@ erDiagram
     }
 
 ```
+
+## **Tech Stack**
+
+| Tool / Library         | Description                                   |
+|------------------------|-----------------------------------------------|
+| **Python 3.12**        | Core language                                 |
+| **Flask**              | Web framework                                 |
+| **Flask-RESTful**      | Simplifies resource routing                   |
+| **Flask-JWT-Extended** | Handles JWT authentication                    |
+| **Flask-Migrate**      | Database migrations                           |
+| **Flask-CORS**         | Cross-origin request support                  |
+| **SQLAlchemy**         | ORM for database interaction                  |
+| **PostgreSQL**         | Relational database                           |
+| **Pipenv**             | Dependency management                         |
+| **dotenv**             | Secure environment configuration              |
+| **Postman**            | API route testing                             |
+
 
 ---
 
