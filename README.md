@@ -13,7 +13,6 @@
 </p>
 
 
-
 > A secure, **JWT-authenticated Flask API** for managing an online food ordering system. Features include User/Admin registration and login, food catalog management, ordering and token blacklisting.
 
 ---
