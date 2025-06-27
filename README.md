@@ -149,6 +149,16 @@ http://127.0.0.1:5555
 ├── requirements.txt
 ├── run.py
 ├── runtime.txt
+├── screenshots
+│   ├── additemorder.png
+│   ├── getfoods.png
+│   ├── get_use_details.png
+│   ├── login.png
+│   ├── logo.png
+│   ├── logout.png
+│   ├── makeorder.png
+│   ├── refresh.png
+│   └── register.png
 └── server
     ├── app.py
     ├── config.py
@@ -168,7 +178,7 @@ http://127.0.0.1:5555
     ├── __pycache__
     │   └── app.cpython-312.pyc
     └── seed.py
-
+    
 ```
 
 ## **API Routes Summary**
